@@ -62,7 +62,7 @@ export const list = async (ctx) => {
     try {
         const posts = await Post.find()
             .sort({ _id: -1 }) // 포스트가 역순으로 설정
-            .limit(2) // 최근 10개의 포스트만 불러옴
+            .limit(10)
             .skip((page - 1) * 10)
             .lean()
             .exec();
@@ -74,7 +74,7 @@ export const list = async (ctx) => {
                 post.body.length < 200
                     ? post.body
                     : `${post.body.slice(0, 200)}...`,
-        }));
+        })); // 200자 길이 제한
         ctx.body = posts;
     } catch (e) {
         ctx.throw(500, e);
